@@ -91,6 +91,22 @@ static bool dht_sensor_create(int pin, enum dht_type type) {
   return true;
 }
 
+float mgos_prometheus_sensors_dht_get_temp(uint8_t idx) {
+  if (idx>=s_num_dht)
+    return NAN;
+  if (!s_dht_sensor[idx])
+    return NAN;
+  return s_dht_sensor[idx]->temp;
+}
+
+float mgos_prometheus_sensors_dht_get_humidity(uint8_t idx) {
+  if (idx>=s_num_dht)
+    return NAN;
+  if (!s_dht_sensor[idx])
+    return NAN;
+  return s_dht_sensor[idx]->humidity;
+}
+
 void dht_init() {
   char *tok;
 
