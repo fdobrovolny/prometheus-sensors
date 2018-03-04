@@ -18,6 +18,7 @@ config_schema:
   - ["sensors", "o", {title: "Sensors settings"}]
   - ["sensors.dht_gpio", "s", "13,12,14", {title: "Comma Separated list of GPIO pins to enable DHT22/AM2302 sensors on"}]
   - ["sensors.dht_period", "i", 3, {title: "Sample period in seconds for DHT sensors"}]
+  - ["sensors.pushgateway_period", "i", 10, {title: "Period in seconds for Prometheus Pushgateway POSTs"}]
   - ["prometheus.pushgateway", "prometheus.example.net:9091"]
 
 
