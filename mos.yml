@@ -1,0 +1,30 @@
+author: Pim van Pelt <pim@ipng.nl>
+description: Library that interfaces sensors to Prometheus Metrics
+type: lib
+version: 1.0
+platforms: [esp32, esp8266]
+
+tags:
+  - c
+
+# List of files / directories with C sources. No slashes at the end of dir names.
+sources:
+  - src
+
+includes:
+  - include
+
+config_schema:
+  - ["sensors", "o", {title: "Sensors settings"}]
+  - ["sensors.dht_gpio", "s", "13,12,14", {title: "Comma Separated list of GPIO pins to enable DHT22/AM2302 sensors on"}]
+  - ["sensors.dht_period", "i", 3, {title: "Sample period in seconds for DHT sensors"}]
+  - ["prometheus.pushgateway", "prometheus.example.net:9091"]
+
+
+# List of libraries used by this app, in order of initialisation
+libs:
+  - origin: https://github.com/mongoose-os-libs/dht
+  - origin: https://github.com/mongoose-os-libs/prometheus-metrics
+
+# Used by the mos tool to catch mos binaries incompatible with this file format
+manifest_version: 2017-05-18
