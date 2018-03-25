@@ -19,36 +19,17 @@ struct dht_sensor {
 static struct dht_sensor *s_dht_sensor[MAX_DHT];
 static int s_num_dht = 0;
 
-static void print_chunk(struct mg_connection *nc, char *name, char *fmt, ...) {
-  char chunk[500];
-  int chunklen=0;
-  va_list ap;
-
-  snprintf(chunk, sizeof(chunk), "%s%s", name, fmt[0]=='{' ? "" : " ");
-  va_start(ap, fmt);
-  vsnprintf(chunk+strlen(chunk), sizeof(chunk)-strlen(chunk), fmt, ap);
-  va_end(ap);
-  strncat(chunk, "\n", sizeof(chunk));
-  chunklen=strlen(chunk);
-  LOG(LL_DEBUG, ("Chunk '%s' with length %d", chunk, chunklen));
-  mg_printf(nc, "%X\r\n%s\r\n", chunklen, chunk);
-
-}
-
 static void dht_prometheus_metrics(struct mg_connection *nc, void *user_data) {
   int i;
 
-  // BUG -- repeated HELP and TYPE makes Prometheus parser bork :(
-  mgos_prometheus_metrics_printf(nc, GAUGE,
-    "temperature", "Temperature in celcius",
-    "{sensor=\"0\",type=\"DHT\"} %f", s_dht_sensor[0]->temp);
-  mgos_prometheus_metrics_printf(nc, GAUGE,
-    "humidity", "Relative humidity percentage",
-    "{sensor=\"0\",type=\"DHT\"} %f", s_dht_sensor[0]->humidity);
+  for (i=0; i<s_num_dht; i++) {
+    mgos_prometheus_metrics_printf(nc, GAUGE,
+      "temperature", "Temperature in Celcius",
+      "{sensor=\"%d\",type=\"DHT\"} %f", i, s_dht_sensor[i]->temp);
+    mgos_prometheus_metrics_printf(nc, GAUGE,
+      "humidity", "Relative humidity percentage",
+      "{sensor=\"%d\",type=\"DHT\"} %f", i, s_dht_sensor[i]->humidity);
 
-  for (i=1; i<s_num_dht; i++) {
-    print_chunk(nc, "temperature", "{sensor=\"%d\",type=\"DHT\"} %f", i, s_dht_sensor[i]->temp);
-    print_chunk(nc, "humidity", "{sensor=\"%d\",type=\"DHT\"} %f", i, s_dht_sensor[i]->humidity);
   }
 
   (void) user_data;

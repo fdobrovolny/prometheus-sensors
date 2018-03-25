@@ -8,28 +8,13 @@
 
 static struct mgos_veml6075 *s_veml6075;
 
-static void print_chunk(struct mg_connection *nc, char *name, char *fmt, ...) {
-  char chunk[500];
-  int chunklen=0;
-  va_list ap;
-
-  snprintf(chunk, sizeof(chunk), "%s%s", name, fmt[0]=='{' ? "" : " ");
-  va_start(ap, fmt);
-  vsnprintf(chunk+strlen(chunk), sizeof(chunk)-strlen(chunk), fmt, ap);
-  va_end(ap);
-  strncat(chunk, "\n", sizeof(chunk));
-  chunklen=strlen(chunk);
-//  LOG(LL_DEBUG, ("Chunk '%s' with length %d", chunk, chunklen));
-  mg_printf(nc, "%X\r\n%s\r\n", chunklen, chunk);
-}
-
 static void veml6075_prometheus_metrics(struct mg_connection *nc, void *user_data) {
-  // BUG -- repeated HELP and TYPE makes Prometheus parser bork :(
   mgos_prometheus_metrics_printf(nc, GAUGE,
     "UV", "Ultra Violet light intensity, in sensor counts",
     "{band=\"UVA\",type=\"VEML6075\", sensor=\"0\"} %f", mgos_veml6075_getUVA(s_veml6075));
-  print_chunk(nc, "UV", "{band=\"UVB\",type=\"VEML6075\", sensor=\"0\"} %f", mgos_veml6075_getUVB(s_veml6075));
-
+  mgos_prometheus_metrics_printf(nc, GAUGE,
+    "UV", "Ultra Violet light intensity, in sensor counts",
+    "{band=\"UVB\",type=\"VEML6075\", sensor=\"0\"} %f", mgos_veml6075_getUVB(s_veml6075));
   mgos_prometheus_metrics_printf(nc, GAUGE,
     "UVIndex", "2: Low, 5.5 Moderate, 7.5 High, 10.5 Very High, else Extreme",
     "{sensor=\"0\",type=\"VEML6075\"} %f", mgos_veml6075_getUVIndex(s_veml6075));
