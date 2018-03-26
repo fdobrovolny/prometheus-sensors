@@ -41,4 +41,3 @@ UV{band="UVA",sensor="0",type="VEML6075"} 0
 UV{band="UVB",sensor="0",type="VEML6075"} 2
 UVIndex{sensor="0",type="VEML6075"} 0.00125
 ```
-
