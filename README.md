@@ -41,3 +41,23 @@ UV{band="UVA",sensor="0",type="VEML6075"} 0
 UV{band="UVB",sensor="0",type="VEML6075"} 2
 UVIndex{sensor="0",type="VEML6075"} 0.00125
 ```
+
+### BME280
+
+This is using `bme280` library; one sensor is allowed based on I2C
+address on the bus, normally `0x10`, but configurable with `sensors.bme280_i2caddr`
+in `mos.yml`.  The chip is polled with a period of `sensors.bme280_period`
+which defaults to 3 seconds, each sensor reading takes approximately 4ms.
+Note that there are several versions of this popular barometer chip: BME280
+is fully fledged and includes a hygrometer (measuring the relative humidity),
+while BMP280 does not.
+
+Please see the upstream [source](https://github.com/mongoose-os-libs/bme280)
+for more information on the driver.
+
+Reported values (all types are gauges):
+```
+temperature{sensor="0",type="BME280"} 18.4
+humidity{sensor="0",type="BME280"} 77.4
+pressure{sensor="0",type="BME280"} 96720.4
+```
