@@ -61,3 +61,67 @@ temperature{sensor="0",type="BME280"} 18.4
 humidity{sensor="0",type="BME280"} 77.4
 pressure{sensor="0",type="BME280"} 96720.4
 ```
+
+### MCP9808
+
+This is using `mcp9808-i2c` library; one sensor is allowed based on I2C
+address on the bus, normally `0x18`, but configurable with `sensors.mcp9808_i2caddr`
+in `mos.yml`.  The chip is polled with a period of `sensors.mcp9808_period`
+which defaults to 3 seconds, each sensor reading takes approximately 4ms.
+
+Please see the upstream [source](https://github.com/mongoose-os-libs/mcp9808-i2c)
+for more information on the driver.
+
+Reported values (all types are gauges):
+```
+temperature{sensor="0",type="MCP9808"} 18.6
+```
+
+### Si7021
+
+This is using `si7021-i2c` library; one sensor is allowed based on I2C
+address on the bus, normally `0x40`, but configurable with `sensors.si7021_i2caddr`
+in `mos.yml`.  The chip is polled with a period of `sensors.si7021_period`
+which defaults to 3 seconds, each sensor reading takes approximately 4ms.
+
+Please see the upstream [source](https://github.com/mongoose-os-libs/si7021-i2c)
+for more information on the driver.
+
+Reported values (all types are gauges):
+```
+temperature{sensor="0",type="SI7021"} 18.6
+humidity{sensor="0",type="SI7021"} 56.4
+```
+
+### SHT31
+
+This is using `sht31-i2c` library; one sensor is allowed based on I2C
+address on the bus, normally `0x44`, but configurable with `sensors.sht31_i2caddr`
+in `mos.yml`.  The chip is polled with a period of `sensors.sht31_period`
+which defaults to 3 seconds, each sensor reading takes approximately 4ms.
+
+Please see the upstream [source](https://github.com/mongoose-os-libs/si7021-i2c)
+for more information on the driver.
+
+Reported values (all types are gauges):
+```
+temperature{sensor="0",type="SHT31"} 18.6
+humidity{sensor="0",type="SHT31"} 56.4
+```
+
+### HTU21D-F
+
+This is using `htu21df-i2c` library; one sensor is allowed based on I2C
+address on the bus, normally `0x40`, but configurable with `sensors.htu21df_i2caddr`
+in `mos.yml`.  The chip is polled with a period of `sensors.htu21df_period`
+which defaults to 3 seconds, each sensor reading takes approximately 4ms.
+
+Please see the upstream [source](https://github.com/mongoose-os-libs/si7021-i2c)
+for more information on the driver.
+
+Reported values (all types are gauges):
+```
+temperature{sensor="0",type="HTU21DF"} 18.5
+humidity{sensor="0",type="HTU21DF"} 55.8
+```
+

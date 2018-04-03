@@ -22,6 +22,14 @@ config_schema:
   - ["sensors.veml6075_period", "i", 3, {title: "Sample period in seconds for VEML6075 sensor"}]
   - ["sensors.bme280_i2caddr", "i", 0x77, {title: "I2C Address for BME280 sensor"}]
   - ["sensors.bme280_period", "i", 3, {title: "Sample period in seconds for BME280 sensor"}]
+  - ["sensors.htu21df_i2caddr", "i", 0x40, {title: "I2C Address for HTU21DF sensor"}]
+  - ["sensors.htu21df_period", "i", 3, {title: "Sample period in seconds for HTU21DF sensor"}]
+  - ["sensors.sht31_i2caddr", "i", 0x44, {title: "I2C Address for SHT31 sensor"}]
+  - ["sensors.sht31_period", "i", 3, {title: "Sample period in seconds for SHT31 sensor"}]
+  - ["sensors.si7021_i2caddr", "i", 0x40, {title: "I2C Address for SI7021 sensor"}]
+  - ["sensors.si7021_period", "i", 3, {title: "Sample period in seconds for SI7021 sensor"}]
+  - ["sensors.mcp9808_i2caddr", "i", 0x18, {title: "I2C Address for MCP9808 sensor"}]
+  - ["sensors.mcp9808_period", "i", 3, {title: "Sample period in seconds for MCP9808 sensor"}]
   - ["sensors.pushgateway_period", "i", 10, {title: "Period in seconds for Prometheus Pushgateway POSTs"}]
   - ["prometheus.pushgateway", "prometheus.example.net:9091"]
 
@@ -33,6 +41,7 @@ config_schema:
 #  - origin: https://github.com/mongoose-os-libs/bme280
 libs:
   - origin: https://github.com/mongoose-os-libs/prometheus-metrics
+    version: latest
 
 # Used by the mos tool to catch mos binaries incompatible with this file format
 manifest_version: 2017-05-18
