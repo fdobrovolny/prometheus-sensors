@@ -11,20 +11,23 @@ static struct mgos_bme280_data s_bme280_data;
 
 static void bme280_prometheus_metrics(struct mg_connection *nc, void *user_data) {
 
+  bool bme280;
+
   if (!s_bme280) return;
+  bme280=mgos_bme280_is_bme280(s_bme280);
 
   mgos_prometheus_metrics_printf(nc, GAUGE,
     "pressure", "Barometer pressure in HPa",
-    "{sensor=\"0\", type=\"BME280\"} %f", s_bme280_data.press);
+    "{sensor=\"0\", type=\"BM%s280\"} %f", bme280?"E":"P", s_bme280_data.press);
 
   mgos_prometheus_metrics_printf(nc, GAUGE,
     "temperature", "Temperature in Celcius",
-    "{sensor=\"0\",type=\"BME280\"} %f", s_bme280_data.temp);
+    "{sensor=\"0\",type=\"BM%s280\"} %f", bme280?"E":"P", s_bme280_data.temp);
 
   if (mgos_bme280_is_bme280(s_bme280)) {
     mgos_prometheus_metrics_printf(nc, GAUGE,
       "humidity", "Relative humidity in percent",
-      "{sensor=\"0\",type=\"BME280\"} %f", s_bme280_data.humid);
+      "{sensor=\"0\",type=\"BM%s280\"} %f", bme280?"E":"P", s_bme280_data.humid);
   }
 
   (void) user_data;
@@ -39,9 +42,9 @@ static void bme280_timer_cb(void *user_data) {
   usecs=1000000*(mgos_uptime()-start);
 
   if (mgos_bme280_is_bme280(s_bme280)) {
-    LOG(LL_INFO, ("sensor=0 humidity=%.1f%% temperature=%.1fC pressure=%.1fHPa usecs=%u", s_bme280_data.humid, s_bme280_data.temp, s_bme280_data.press, usecs));
+    LOG(LL_INFO, ("BME280 sensor=0 humidity=%.2f%% temperature=%.2fC pressure=%.1fHPa usecs=%u", s_bme280_data.humid, s_bme280_data.temp, s_bme280_data.press, usecs));
   } else {
-    LOG(LL_INFO, ("sensor=0 temperature=%.1fC pressure=%.1fHPa usecs=%u", s_bme280_data.temp, s_bme280_data.press, usecs));
+    LOG(LL_INFO, ("BMP280 sensor=0 temperature=%.2fC pressure=%.1fHPa usecs=%u", s_bme280_data.temp, s_bme280_data.press, usecs));
   }
 
   (void) user_data;

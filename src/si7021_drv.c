@@ -28,12 +28,15 @@ static void si7021_timer_cb(void *user_data) {
   temperature=mgos_si7021_getTemperature(s_si7021);
   humidity=mgos_si7021_getHumidity(s_si7021);
   usecs=1000000*(mgos_uptime()-start);
-  LOG(LL_INFO, ("SI7021 sensor=0 temperature=%.2f humidity=%.1f usecs=%u", temperature, humidity, usecs));
+  LOG(LL_INFO, ("SI7021 sensor=0 temperature=%.2fC humidity=%.1f%% usecs=%u", temperature, humidity, usecs));
 
   (void) user_data;
 }
 
 void si7021_drv_init() {
+#ifdef MGOS_HAVE_HTU21DF_I2C
+  LOG(LL_WARN, ("HTU21DF and SI7021 are both on I2C address 0x40 -- do not enable both!"));
+#endif
   s_si7021 = mgos_si7021_create(mgos_i2c_get_global(), mgos_sys_config_get_sensors_si7021_i2caddr());
   if (s_si7021) {
     mgos_set_timer(mgos_sys_config_get_sensors_si7021_period()*1000, true, si7021_timer_cb, NULL);

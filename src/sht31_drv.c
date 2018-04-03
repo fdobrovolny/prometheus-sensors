@@ -28,12 +28,14 @@ static void sht31_timer_cb(void *user_data) {
   temperature=mgos_sht31_getTemperature(s_sht31);
   humidity=mgos_sht31_getHumidity(s_sht31);
   usecs=1000000*(mgos_uptime()-start);
-  LOG(LL_INFO, ("SHT31 sensor=0 temperature=%.2f humidity=%.1f usecs=%u", temperature, humidity, usecs));
+  LOG(LL_INFO, ("SHT31 sensor=0 temperature=%.2fC humidity=%.1f%% usecs=%u", temperature, humidity, usecs));
 
   (void) user_data;
 }
 
 void sht31_drv_init() {
+#ifdef MGOS_HAVE_SI7021_I2C
+#endif
   s_sht31 = mgos_sht31_create(mgos_i2c_get_global(), mgos_sys_config_get_sensors_sht31_i2caddr());
   if (s_sht31) {
     mgos_set_timer(mgos_sys_config_get_sensors_sht31_period()*1000, true, sht31_timer_cb, NULL);

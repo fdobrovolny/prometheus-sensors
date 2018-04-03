@@ -30,7 +30,7 @@ humidity{sensor="1",type="DHT"} 35.599998
 This is using `veml6075-i2c` library; one sensor is allowed based on I2C
 address on the bus, normally `0x10`, but configurable with `sensors.veml6075_i2caddr`
 in `mos.yml`.  The chip is polled with a period of `sensors.veml6075_period`
-which defaults to 3 seconds, each sensor reading takes approximately 11ms.
+which defaults to 3 seconds, each sensor reading takes approximately 15ms.
 
 Please see the upstream [source](https://github.com/mongoose-os-libs/veml6075-i2c)
 for more information on the driver.
@@ -67,7 +67,7 @@ pressure{sensor="0",type="BME280"} 96720.4
 This is using `mcp9808-i2c` library; one sensor is allowed based on I2C
 address on the bus, normally `0x18`, but configurable with `sensors.mcp9808_i2caddr`
 in `mos.yml`.  The chip is polled with a period of `sensors.mcp9808_period`
-which defaults to 3 seconds, each sensor reading takes approximately 4ms.
+which defaults to 3 seconds, each sensor reading takes approximately 3ms.
 
 Please see the upstream [source](https://github.com/mongoose-os-libs/mcp9808-i2c)
 for more information on the driver.
@@ -82,7 +82,7 @@ temperature{sensor="0",type="MCP9808"} 18.6
 This is using `si7021-i2c` library; one sensor is allowed based on I2C
 address on the bus, normally `0x40`, but configurable with `sensors.si7021_i2caddr`
 in `mos.yml`.  The chip is polled with a period of `sensors.si7021_period`
-which defaults to 3 seconds, each sensor reading takes approximately 4ms.
+which defaults to 3 seconds, each sensor reading takes approximately 54ms.
 
 Please see the upstream [source](https://github.com/mongoose-os-libs/si7021-i2c)
 for more information on the driver.
@@ -98,7 +98,7 @@ humidity{sensor="0",type="SI7021"} 56.4
 This is using `sht31-i2c` library; one sensor is allowed based on I2C
 address on the bus, normally `0x44`, but configurable with `sensors.sht31_i2caddr`
 in `mos.yml`.  The chip is polled with a period of `sensors.sht31_period`
-which defaults to 3 seconds, each sensor reading takes approximately 4ms.
+which defaults to 3 seconds, each sensor reading takes approximately 18ms.
 
 Please see the upstream [source](https://github.com/mongoose-os-libs/si7021-i2c)
 for more information on the driver.
@@ -114,7 +114,7 @@ humidity{sensor="0",type="SHT31"} 56.4
 This is using `htu21df-i2c` library; one sensor is allowed based on I2C
 address on the bus, normally `0x40`, but configurable with `sensors.htu21df_i2caddr`
 in `mos.yml`.  The chip is polled with a period of `sensors.htu21df_period`
-which defaults to 3 seconds, each sensor reading takes approximately 4ms.
+which defaults to 3 seconds, each sensor reading takes approximately 105ms.
 
 Please see the upstream [source](https://github.com/mongoose-os-libs/si7021-i2c)
 for more information on the driver.

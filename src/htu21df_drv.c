@@ -28,12 +28,15 @@ static void htu21df_timer_cb(void *user_data) {
   temperature=mgos_htu21df_getTemperature(s_htu21df);
   humidity=mgos_htu21df_getHumidity(s_htu21df);
   usecs=1000000*(mgos_uptime()-start);
-  LOG(LL_INFO, ("HTU21DF sensor=0 temperature=%.2f humidity=%.1f usecs=%u", temperature, humidity, usecs));
+  LOG(LL_INFO, ("HTU21DF sensor=0 temperature=%.2fC humidity=%.1f%% usecs=%u", temperature, humidity, usecs));
 
   (void) user_data;
 }
 
 void htu21df_drv_init() {
+#ifdef MGOS_HAVE_SI7021_I2C
+  LOG(LL_WARN, ("HTU21DF and SI7021 are both on I2C address 0x40 -- do not enable both!"));
+#endif
   s_htu21df = mgos_htu21df_create(mgos_i2c_get_global(), mgos_sys_config_get_sensors_htu21df_i2caddr());
   if (s_htu21df) {
     mgos_set_timer(mgos_sys_config_get_sensors_htu21df_period()*1000, true, htu21df_timer_cb, NULL);

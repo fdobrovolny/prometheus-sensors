@@ -46,7 +46,7 @@ static void dht_timer_cb(void *user_data) {
   dht_sensor->temp = mgos_dht_get_temp(dht_sensor->dht);
   dht_sensor->humidity = mgos_dht_get_humidity(dht_sensor->dht);
   usecs=1000000*(mgos_uptime()-start);
-  LOG(LL_DEBUG, ("DHT sensor=%u gpio=%u temp=%.2fC humidity=%.0f%% usecs=%u", dht_sensor->idx, dht_sensor->gpio, dht_sensor->temp, dht_sensor->humidity, usecs));
+  LOG(LL_INFO, ("DHT sensor=%u gpio=%u temperature=%.2fC humidity=%.0f%% usecs=%u", dht_sensor->idx, dht_sensor->gpio, dht_sensor->temp, dht_sensor->humidity, usecs));
 }
 
 static bool dht_sensor_create(int pin, enum dht_type type) {

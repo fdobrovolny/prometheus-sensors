@@ -23,7 +23,7 @@ static void mcp9808_timer_cb(void *user_data) {
   start=mgos_uptime();
   temperature=mgos_mcp9808_getTemperature(s_mcp9808);
   usecs=1000000*(mgos_uptime()-start);
-  LOG(LL_INFO, ("MCP9808 sensor=0 temperature=%.2f usecs=%u", temperature, usecs));
+  LOG(LL_INFO, ("MCP9808 sensor=0 temperature=%.2fC usecs=%u", temperature, usecs));
 
   (void) user_data;
 }
