@@ -38,7 +38,7 @@ static void veml6075_timer_cb(void *user_data) {
 }
 
 void veml6075_drv_init() {
-  s_veml6075 = mgos_veml6075_create(mgos_sys_config_get_sensors_veml6075_i2caddr());
+  s_veml6075 = mgos_veml6075_create(mgos_i2c_get_global(), mgos_sys_config_get_sensors_veml6075_i2caddr());
   if (s_veml6075) {
     mgos_set_timer(mgos_sys_config_get_sensors_veml6075_period()*1000, true, veml6075_timer_cb, NULL);
     mgos_prometheus_metrics_add_handler(veml6075_prometheus_metrics, NULL);
