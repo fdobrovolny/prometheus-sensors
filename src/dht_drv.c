@@ -21,6 +21,7 @@ static int s_num_dht = 0;
 
 static void dht_prometheus_metrics(struct mg_connection *nc, void *user_data) {
   int i;
+  struct mgos_dht_stats stats;
 
   for (i=0; i<s_num_dht; i++) {
     mgos_prometheus_metrics_printf(nc, GAUGE,
@@ -29,6 +30,25 @@ static void dht_prometheus_metrics(struct mg_connection *nc, void *user_data) {
     mgos_prometheus_metrics_printf(nc, GAUGE,
       "humidity", "Relative humidity percentage",
       "{sensor=\"%d\",type=\"DHT\"} %f", i, s_dht_sensor[i]->humidity);
+
+    if (mgos_dht_getStats(s_dht_sensor[i]->dht, &stats)) {
+      mgos_prometheus_metrics_printf(nc, COUNTER,
+        "sensor_read_total", "Total reads from sensor",
+        "{sensor=\"%d\",type=\"DHT\"} %u", i, stats.read);
+      mgos_prometheus_metrics_printf(nc, COUNTER,
+        "sensor_read_success_total", "Total successful reads from sensor",
+        "{sensor=\"%d\",type=\"DHT\"} %u", i, stats.read_success);
+      mgos_prometheus_metrics_printf(nc, COUNTER,
+        "sensor_read_success_cached_total", "Total successful cached reads from sensor",
+        "{sensor=\"%d\",type=\"DHT\"} %u", i, stats.read_success_cached);
+      uint32_t errors = stats.read - stats.read_success - stats.read_success_cached;
+      mgos_prometheus_metrics_printf(nc, COUNTER,
+        "sensor_read_error_total", "Total unsuccessful reads from sensor",
+        "{sensor=\"%d\",type=\"DHT\"} %u", i, errors);
+      mgos_prometheus_metrics_printf(nc, COUNTER,
+        "sensor_read_success_usecs_total", "Total microseconds spent in reads from sensor",
+        "{sensor=\"%d\",type=\"DHT\"} %f", i, stats.read_success_usecs);
+    }
   }
 
   (void) user_data;
@@ -36,16 +56,18 @@ static void dht_prometheus_metrics(struct mg_connection *nc, void *user_data) {
 
 static void dht_timer_cb(void *user_data) {
   struct dht_sensor *dht_sensor = (struct dht_sensor *)user_data;
-  double start;
+  struct mgos_dht_stats stats_before, stats_after;
   uint32_t usecs=0;
 
   if (!dht_sensor) return;
 
-  start=mgos_uptime();
+  mgos_dht_getStats(dht_sensor->dht, &stats_before);
   dht_sensor->temp = mgos_dht_get_temp(dht_sensor->dht);
   dht_sensor->humidity = mgos_dht_get_humidity(dht_sensor->dht);
-  usecs=1000000*(mgos_uptime()-start);
-  LOG(LL_INFO, ("DHT sensor=%u gpio=%u temperature=%.2fC humidity=%.0f%% usecs=%u", dht_sensor->idx, dht_sensor->gpio, dht_sensor->temp, dht_sensor->humidity, usecs));
+  mgos_dht_getStats(dht_sensor->dht, &stats_after);
+
+  usecs=stats_after.read_success_usecs - stats_before.read_success_usecs;
+  LOG(LL_INFO, ("DHT sensor=%u gpio=%u temperature=%.2fC humidity=%.1f%% usecs=%u", dht_sensor->idx, dht_sensor->gpio, dht_sensor->temp, dht_sensor->humidity, usecs));
 }
 
 static bool dht_sensor_create(int pin, enum dht_type type) {
