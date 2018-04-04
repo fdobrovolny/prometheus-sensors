@@ -9,6 +9,8 @@
 static struct mgos_veml6075 *s_veml6075;
 
 static void veml6075_prometheus_metrics(struct mg_connection *nc, void *user_data) {
+  struct mgos_veml6075_stats stats;
+
   mgos_prometheus_metrics_printf(nc, GAUGE,
     "UV", "Ultra Violet light intensity, in sensor counts",
     "{band=\"UVA\",type=\"VEML6075\", sensor=\"0\"} %f", mgos_veml6075_getUVA(s_veml6075));
@@ -18,6 +20,25 @@ static void veml6075_prometheus_metrics(struct mg_connection *nc, void *user_dat
   mgos_prometheus_metrics_printf(nc, GAUGE,
     "UVIndex", "2: Low, 5.5 Moderate, 7.5 High, 10.5 Very High, else Extreme",
     "{sensor=\"0\",type=\"VEML6075\"} %f", mgos_veml6075_getUVIndex(s_veml6075));
+
+  if (mgos_veml6075_getStats(s_veml6075, &stats)) {
+    mgos_prometheus_metrics_printf(nc, COUNTER,
+      "sensor_read_total", "Total reads from sensor",
+      "{sensor=\"0\",type=\"VEML6075\"} %u", stats.read);
+    mgos_prometheus_metrics_printf(nc, COUNTER,
+      "sensor_read_success_total", "Total successful reads from sensor",
+      "{sensor=\"0\",type=\"VEML6075\"} %u", stats.read_success);
+    mgos_prometheus_metrics_printf(nc, COUNTER,
+      "sensor_read_success_cached_total", "Total successful cached reads from sensor",
+      "{sensor=\"0\",type=\"VEML6075\"} %u", stats.read_success_cached);
+    uint32_t errors = stats.read - stats.read_success - stats.read_success_cached;
+    mgos_prometheus_metrics_printf(nc, COUNTER,
+      "sensor_read_error_total", "Total unsuccessful reads from sensor",
+      "{sensor=\"0\",type=\"VEML6075\"} %u", errors);
+    mgos_prometheus_metrics_printf(nc, COUNTER,
+      "sensor_read_success_usecs_total", "Total microseconds spent in reads from sensor",
+      "{sensor=\"0\",type=\"VEML6075\"} %f", stats.read_success_usecs);
+  }
 
   (void) user_data;
 }

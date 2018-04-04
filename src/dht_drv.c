@@ -29,7 +29,6 @@ static void dht_prometheus_metrics(struct mg_connection *nc, void *user_data) {
     mgos_prometheus_metrics_printf(nc, GAUGE,
       "humidity", "Relative humidity percentage",
       "{sensor=\"%d\",type=\"DHT\"} %f", i, s_dht_sensor[i]->humidity);
-
   }
 
   (void) user_data;
