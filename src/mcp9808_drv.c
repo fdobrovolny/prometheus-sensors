@@ -37,6 +37,7 @@ static void mcp9808_prometheus_metrics(struct mg_connection *nc, void *user_data
   (void) user_data;
 }
 
+
 static void mcp9808_timer_cb(void *user_data) {
   float temperature;
   struct mgos_mcp9808_stats stats_before, stats_after;
@@ -52,6 +53,7 @@ static void mcp9808_timer_cb(void *user_data) {
   (void) user_data;
 }
 
+
 void mcp9808_drv_init() {
   s_mcp9808 = mgos_mcp9808_create(mgos_i2c_get_global(), mgos_sys_config_get_sensors_mcp9808_i2caddr());
   if (s_mcp9808) {
@@ -59,6 +61,7 @@ void mcp9808_drv_init() {
     mgos_prometheus_metrics_add_handler(mcp9808_prometheus_metrics, NULL);
   }
 }
+
 
 #else
 void mcp9808_drv_init() {

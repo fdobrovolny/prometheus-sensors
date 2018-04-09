@@ -6,5 +6,4 @@
 
 float mgos_prometheus_sensors_dht_get_temp(uint8_t idx);
 float mgos_prometheus_sensors_dht_get_humidity(uint8_t idx);
-
-#endif // __MGOS_PROMETHEUS_SENSORS_H
+#endif                                  // __MGOS_PROMETHEUS_SENSORS_H

@@ -15,6 +15,7 @@ static void pushgateway_timer(void *user_data) {
   (void) user_data;
 }
 
+
 bool mgos_prometheus_sensors_init(void) {
   dht_drv_init();
   veml6075_drv_init();

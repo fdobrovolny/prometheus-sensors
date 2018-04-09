@@ -43,6 +43,7 @@ static void veml6075_prometheus_metrics(struct mg_connection *nc, void *user_dat
   (void) user_data;
 }
 
+
 static void veml6075_timer_cb(void *user_data) {
   double start;
   uint32_t usecs=0;
@@ -58,6 +59,7 @@ static void veml6075_timer_cb(void *user_data) {
   (void) user_data;
 }
 
+
 void veml6075_drv_init() {
   s_veml6075 = mgos_veml6075_create(mgos_i2c_get_global(), mgos_sys_config_get_sensors_veml6075_i2caddr());
   if (s_veml6075) {
@@ -65,6 +67,7 @@ void veml6075_drv_init() {
     mgos_prometheus_metrics_add_handler(veml6075_prometheus_metrics, NULL);
   }
 }
+
 
 #else
 void veml6075_drv_init() {

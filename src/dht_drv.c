@@ -8,7 +8,8 @@
 
 #define MAX_DHT 8
 
-struct dht_sensor {
+struct dht_sensor
+{
   struct mgos_dht *dht;
   float temp;
   float humidity;
@@ -54,6 +55,7 @@ static void dht_prometheus_metrics(struct mg_connection *nc, void *user_data) {
   (void) user_data;
 }
 
+
 static void dht_timer_cb(void *user_data) {
   struct dht_sensor *dht_sensor = (struct dht_sensor *)user_data;
   struct mgos_dht_stats stats_before, stats_after;
@@ -69,6 +71,7 @@ static void dht_timer_cb(void *user_data) {
   usecs=stats_after.read_success_usecs - stats_before.read_success_usecs;
   LOG(LL_INFO, ("DHT sensor=%u gpio=%u temperature=%.2fC humidity=%.1f%% usecs=%u", dht_sensor->idx, dht_sensor->gpio, dht_sensor->temp, dht_sensor->humidity, usecs));
 }
+
 
 static bool dht_sensor_create(int pin, enum dht_type type) {
   struct dht_sensor *dht_sensor = calloc(1, sizeof(struct dht_sensor));
@@ -92,6 +95,7 @@ static bool dht_sensor_create(int pin, enum dht_type type) {
   return true;
 }
 
+
 float mgos_prometheus_sensors_dht_get_temp(uint8_t idx) {
   if (idx>=s_num_dht)
     return NAN;
@@ -100,6 +104,7 @@ float mgos_prometheus_sensors_dht_get_temp(uint8_t idx) {
   return s_dht_sensor[idx]->temp;
 }
 
+
 float mgos_prometheus_sensors_dht_get_humidity(uint8_t idx) {
   if (idx>=s_num_dht)
     return NAN;
@@ -107,6 +112,7 @@ float mgos_prometheus_sensors_dht_get_humidity(uint8_t idx) {
     return NAN;
   return s_dht_sensor[idx]->humidity;
 }
+
 
 void dht_drv_init() {
   char *tok;
@@ -124,6 +130,7 @@ void dht_drv_init() {
   if (s_num_dht>0)
     mgos_prometheus_metrics_add_handler(dht_prometheus_metrics, NULL);
 }
+
 
 #else
 void dht_drv_init() {

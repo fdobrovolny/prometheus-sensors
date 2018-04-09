@@ -40,6 +40,7 @@ static void si7021_prometheus_metrics(struct mg_connection *nc, void *user_data)
   (void) user_data;
 }
 
+
 static void si7021_timer_cb(void *user_data) {
   float temperature, humidity;
   struct mgos_si7021_stats stats_before, stats_after;
@@ -56,16 +57,18 @@ static void si7021_timer_cb(void *user_data) {
   (void) user_data;
 }
 
+
 void si7021_drv_init() {
-#ifdef MGOS_HAVE_HTU21DF_I2C
+  #ifdef MGOS_HAVE_HTU21DF_I2C
   LOG(LL_WARN, ("HTU21DF and SI7021 are both on I2C address 0x40 -- do not enable both!"));
-#endif
+  #endif
   s_si7021 = mgos_si7021_create(mgos_i2c_get_global(), mgos_sys_config_get_sensors_si7021_i2caddr());
   if (s_si7021) {
     mgos_set_timer(mgos_sys_config_get_sensors_si7021_period()*1000, true, si7021_timer_cb, NULL);
     mgos_prometheus_metrics_add_handler(si7021_prometheus_metrics, NULL);
   }
 }
+
 
 #else
 void si7021_drv_init() {

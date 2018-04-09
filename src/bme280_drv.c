@@ -49,9 +49,9 @@ static void bme280_prometheus_metrics(struct mg_connection *nc, void *user_data)
       "{sensor=\"0\",type=\"BM%s280\"} %f", bme280?"E":"P", stats.read_success_usecs);
   }
 
-
   (void) user_data;
 }
+
 
 static void bme280_timer_cb(void *user_data) {
   struct mgos_bme280_stats stats_before, stats_after;
@@ -65,22 +65,26 @@ static void bme280_timer_cb(void *user_data) {
 
   if (mgos_bme280_is_bme280(s_bme280)) {
     LOG(LL_INFO, ("BME280 sensor=0 humidity=%.2f%% temperature=%.2fC pressure=%.1fHPa usecs=%u", s_bme280_data.humid, s_bme280_data.temp, s_bme280_data.press, usecs));
-  } else {
+  }
+  else {
     LOG(LL_INFO, ("BMP280 sensor=0 temperature=%.2fC pressure=%.1fHPa usecs=%u", s_bme280_data.temp, s_bme280_data.press, usecs));
   }
 
   (void) user_data;
 }
 
+
 void bme280_drv_init() {
   s_bme280 = mgos_bme280_i2c_create(mgos_sys_config_get_sensors_bme280_i2caddr());
   if (s_bme280) {
     mgos_set_timer(mgos_sys_config_get_sensors_bme280_period()*1000, true, bme280_timer_cb, NULL);
     mgos_prometheus_metrics_add_handler(bme280_prometheus_metrics, NULL);
-  } else {
+  }
+  else {
     LOG(LL_ERROR, ("Could not create BME280 sensor on I2C address 0x%02x", mgos_sys_config_get_sensors_bme280_i2caddr()));
   }
 }
+
 
 #else
 void bme280_drv_init() {

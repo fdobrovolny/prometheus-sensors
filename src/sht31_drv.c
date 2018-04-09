@@ -40,6 +40,7 @@ static void sht31_prometheus_metrics(struct mg_connection *nc, void *user_data) 
   (void) user_data;
 }
 
+
 static void sht31_timer_cb(void *user_data) {
   float temperature, humidity;
   struct mgos_sht31_stats stats_before, stats_after;
@@ -56,15 +57,17 @@ static void sht31_timer_cb(void *user_data) {
   (void) user_data;
 }
 
+
 void sht31_drv_init() {
-#ifdef MGOS_HAVE_SI7021_I2C
-#endif
+  #ifdef MGOS_HAVE_SI7021_I2C
+  #endif
   s_sht31 = mgos_sht31_create(mgos_i2c_get_global(), mgos_sys_config_get_sensors_sht31_i2caddr());
   if (s_sht31) {
     mgos_set_timer(mgos_sys_config_get_sensors_sht31_period()*1000, true, sht31_timer_cb, NULL);
     mgos_prometheus_metrics_add_handler(sht31_prometheus_metrics, NULL);
   }
 }
+
 
 #else
 void sht31_drv_init() {
