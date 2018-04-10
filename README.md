@@ -116,7 +116,7 @@ address on the bus, normally `0x40`, but configurable with `sensors.htu21df_i2ca
 in `mos.yml`.  The chip is polled with a period of `sensors.htu21df_period`
 which defaults to 3 seconds, each sensor reading takes approximately 105ms.
 
-Please see the upstream [source](https://github.com/mongoose-os-libs/si7021-i2c)
+Please see the upstream [source](https://github.com/mongoose-os-libs/htu21df-i2c)
 for more information on the driver.
 
 Reported values (all types are gauges):
@@ -125,3 +125,18 @@ temperature{sensor="0",type="HTU21DF"} 18.5
 humidity{sensor="0",type="HTU21DF"} 55.8
 ```
 
+### CCS811
+
+This is using `ccs811-i2c` library; one sensor is allowed based on I2C
+address on the bus, normally `0x5A`, but configurable with `sensors.ccs811_i2caddr`
+in `mos.yml`.  The chip is polled with a period of `sensors.ccs811_period`
+which defaults to 3 seconds, each sensor reading takes approximately 5ms.
+
+Please see the upstream [source](https://github.com/mongoose-os-libs/ccs811-i2c)
+for more information on the driver.
+
+Reported values (all types are gauges):
+```
+eco2{sensor="0",type="CCS811"} 7992
+tvoc{sensor="0",type="CCS811"} 1156
+```

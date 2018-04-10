@@ -30,6 +30,8 @@ config_schema:
   - ["sensors.si7021_period", "i", 3, {title: "Sample period in seconds for SI7021 sensor"}]
   - ["sensors.mcp9808_i2caddr", "i", 0x18, {title: "I2C Address for MCP9808 sensor"}]
   - ["sensors.mcp9808_period", "i", 3, {title: "Sample period in seconds for MCP9808 sensor"}]
+  - ["sensors.ccs811_i2caddr", "i", 0x5a, {title: "I2C Address for CCS811 sensor"}]
+  - ["sensors.ccs811_period", "i", 3, {title: "Sample period in seconds for CCS811 sensor"}]
   - ["sensors.pushgateway_period", "i", 10, {title: "Period in seconds for Prometheus Pushgateway POSTs"}]
   - ["prometheus.pushgateway", "prometheus.example.net:9091"]
 
@@ -39,6 +41,11 @@ config_schema:
 #  - origin: https://github.com/mongoose-os-libs/dht
 #  - origin: https://github.com/mongoose-os-libs/veml6075-i2c
 #  - origin: https://github.com/mongoose-os-libs/bme280
+#  - origin: https://github.com/mongoose-os-libs/sht31-i2c
+#  - origin: https://github.com/mongoose-os-libs/si7021-i2c
+#  - origin: https://github.com/mongoose-os-libs/htu21df-i2c
+#  - origin: https://github.com/mongoose-os-libs/mcp9808-i2c
+#  - origin: https://github.com/mongoose-os-libs/ccs811-i2c
 libs:
   - origin: https://github.com/mongoose-os-libs/prometheus-metrics
     version: latest
