@@ -47,8 +47,7 @@ config_schema:
 #  - origin: https://github.com/mongoose-os-libs/mcp9808-i2c
 #  - origin: https://github.com/mongoose-os-libs/ccs811-i2c
 libs:
-  - origin: https://github.com/mongoose-os-libs/prometheus-metrics
-    version: latest
+  - origin: /home/pim/src/prometheus-metrics
 
 # Used by the mos tool to catch mos binaries incompatible with this file format
 manifest_version: 2017-05-18
