@@ -1,4 +1,4 @@
-author: Pim van Pelt <pim@ipng.nl>
+author: Pim van Pelt <pim@google.com>
 description: Library that interfaces sensors to Prometheus Metrics
 type: lib
 version: 1.0
@@ -47,6 +47,7 @@ config_schema:
 #  - origin: https://github.com/mongoose-os-libs/htu21df-i2c
 #  - origin: https://github.com/mongoose-os-libs/mcp9808-i2c
 #  - origin: https://github.com/mongoose-os-libs/ccs811-i2c
+#  - origin: https://github.com/mongoose-os-libs/barometer
 libs:
   - origin: /home/pim/src/prometheus-metrics
 

@@ -140,3 +140,10 @@ Reported values (all types are gauges):
 eco2{sensor="0",type="CCS811"} 7992
 tvoc{sensor="0",type="CCS811"} 1156
 ```
+
+# Disclaimer
+
+This project is not an official Google project. It is not supported by Google
+and Google specifically disclaims all warranties as to its quality,
+merchantability, or fitness for a particular purpose.
+
