@@ -2,8 +2,6 @@
 
 #ifdef MGOS_HAVE_SI7021_I2C
 #include "mgos_si7021.h"
-#include "mgos_config.h"
-#include "mgos_prometheus_metrics.h"
 #include "mgos_prometheus_sensors.h"
 
 static struct mgos_si7021 *s_si7021;

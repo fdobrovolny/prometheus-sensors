@@ -2,8 +2,6 @@
 
 #ifdef MGOS_HAVE_BAROMETER
 #include "mgos_barometer.h"
-#include "mgos_config.h"
-#include "mgos_prometheus_metrics.h"
 #include "mgos_prometheus_sensors.h"
 #include <math.h>
 

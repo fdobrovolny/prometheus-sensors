@@ -2,8 +2,6 @@
 
 #ifdef MGOS_HAVE_CCS811_I2C
 #include "mgos_ccs811.h"
-#include "mgos_config.h"
-#include "mgos_prometheus_metrics.h"
 #include "mgos_prometheus_sensors.h"
 
 static struct mgos_ccs811 *s_ccs811;

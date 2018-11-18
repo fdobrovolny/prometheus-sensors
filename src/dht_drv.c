@@ -2,8 +2,6 @@
 
 #ifdef MGOS_HAVE_DHT
 #include "mgos_dht.h"
-#include "mgos_config.h"
-#include "mgos_prometheus_metrics.h"
 #include "mgos_prometheus_sensors.h"
 
 #define MAX_DHT    8

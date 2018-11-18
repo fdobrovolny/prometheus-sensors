@@ -2,8 +2,6 @@
 
 #ifdef MGOS_HAVE_HTU21DF_I2C
 #include "mgos_htu21df.h"
-#include "mgos_config.h"
-#include "mgos_prometheus_metrics.h"
 #include "mgos_prometheus_sensors.h"
 
 static struct mgos_htu21df *s_htu21df;

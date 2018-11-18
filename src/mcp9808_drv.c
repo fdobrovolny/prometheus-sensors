@@ -2,8 +2,6 @@
 
 #ifdef MGOS_HAVE_MCP9808_I2C
 #include "mgos_mcp9808.h"
-#include "mgos_config.h"
-#include "mgos_prometheus_metrics.h"
 #include "mgos_prometheus_sensors.h"
 
 static struct mgos_mcp9808 *s_mcp9808;

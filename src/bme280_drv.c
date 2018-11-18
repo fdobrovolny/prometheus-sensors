@@ -2,8 +2,6 @@
 
 #ifdef MGOS_HAVE_BME280
 #include "mgos_bme280.h"
-#include "mgos_config.h"
-#include "mgos_prometheus_metrics.h"
 #include "mgos_prometheus_sensors.h"
 
 static struct mgos_bme280 *    s_bme280;

@@ -2,8 +2,6 @@
 
 #ifdef MGOS_HAVE_SHT31_I2C
 #include "mgos_sht31.h"
-#include "mgos_config.h"
-#include "mgos_prometheus_metrics.h"
 #include "mgos_prometheus_sensors.h"
 
 static struct mgos_sht31 *s_sht31;
