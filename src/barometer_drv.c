@@ -15,43 +15,43 @@ static void barometer_prometheus_metrics(struct mg_connection *nc, void *user_da
   float temperature=NAN, humidity=NAN, pressure=NAN;
 
   for (int i=0; i<NUM_BARO && s_barometer[i]; i++) {
+    const char *type = mgos_barometer_get_device_name(s_barometer[i]);
+
     if (mgos_barometer_get_temperature(s_barometer[i], &temperature)) {
       mgos_prometheus_metrics_printf(nc, GAUGE,
                                    "temperature", "Temperature in Celcius",
-                                   "{sensor=\"%d\",type=\"BAROMETER\"} %f", i, temperature);
+                                   "{sensor=\"%d\",type=\"%s\"} %f", i, type, temperature);
     }
   
     if (mgos_barometer_get_pressure(s_barometer[i], &pressure)) {
       mgos_prometheus_metrics_printf(nc, GAUGE,
                                    "pressure", "Barometer pressure in Pascals",
-                                   "{sensor=\"%d\", type=\"BAROMETER\"} %f", i, pressure);
+                                   "{sensor=\"%d\", type=\"%s\"} %f", i, type, pressure);
     }
   
-    /*
     if (mgos_barometer_get_humidity(s_barometer[i], &humidity)) {
       mgos_prometheus_metrics_printf(nc, GAUGE,
                                    "humidity", "Relative humidity percentage",
-                                   "{sensor=\"%d\",type=\"BAROMETER\"} %f", i, humidity);
+                                   "{sensor=\"%d\",type=\"%s\"} %f", i, type, humidity);
     }
-    */
   
     if (mgos_barometer_get_stats(s_barometer[i], &stats)) {
       mgos_prometheus_metrics_printf(nc, COUNTER,
                                      "sensor_read_total", "Total reads from sensor",
-                                     "{sensor=\"%d\",type=\"BAROMETER\"} %u", i, stats.read);
+                                     "{sensor=\"%d\",type=\"%s\"} %u", i, type, stats.read);
       mgos_prometheus_metrics_printf(nc, COUNTER,
                                      "sensor_read_success_total", "Total successful reads from sensor",
-                                     "{sensor=\"%d\",type=\"BAROMETER\"} %u", i, stats.read_success);
+                                     "{sensor=\"%d\",type=\"%s\"} %u", i, type, stats.read_success);
       mgos_prometheus_metrics_printf(nc, COUNTER,
                                      "sensor_read_success_cached_total", "Total successful cached reads from sensor",
-                                     "{sensor=\"%d\",type=\"BAROMETER\"} %u", i, stats.read_success_cached);
+                                     "{sensor=\"%d\",type=\"%s\"} %u", i, type, stats.read_success_cached);
       uint32_t errors = stats.read - stats.read_success - stats.read_success_cached;
       mgos_prometheus_metrics_printf(nc, COUNTER,
                                      "sensor_read_error_total", "Total unsuccessful reads from sensor",
-                                     "{sensor=\"%d\",type=\"BAROMETER\"} %u", i, errors);
+                                     "{sensor=\"%d\",type=\"%s\"} %u", i, type, errors);
       mgos_prometheus_metrics_printf(nc, COUNTER,
                                      "sensor_read_success_usecs_total", "Total microseconds spent in reads from sensor",
-                                     "{sensor=\"%d\",type=\"BAROMETER\"} %f", i, stats.read_success_usecs);
+                                     "{sensor=\"%d\",type=\"%s\"} %f", i, type, stats.read_success_usecs);
     }
   }
 
@@ -61,6 +61,7 @@ static void barometer_prometheus_metrics(struct mg_connection *nc, void *user_da
 
 static void barometer_timer_cb(void *user_data) {
   struct mgos_barometer *baro = (struct mgos_barometer *)user_data;
+  const char *type = mgos_barometer_get_device_name(baro);
 
   float temperature=NAN, humidity=NAN, pressure=NAN;
   struct mgos_barometer_stats stats_before, stats_after;
@@ -69,11 +70,11 @@ static void barometer_timer_cb(void *user_data) {
   mgos_barometer_get_stats(baro, &stats_before);
   mgos_barometer_get_temperature(baro, &temperature);
   mgos_barometer_get_pressure(baro, &pressure);
-//  mgos_barometer_get_humidity(baro, &humidity);
+  mgos_barometer_get_humidity(baro, &humidity);
   mgos_barometer_get_stats(baro, &stats_after);
 
   usecs = stats_after.read_success_usecs - stats_before.read_success_usecs;
-  LOG(LL_INFO, ("BAROMETER temperature=%.2fC humidity=%.1f%% pressure=%.0fPa usecs=%u", temperature, humidity, pressure, usecs));
+  LOG(LL_INFO, ("%s temperature=%.2fC humidity=%.1f%% pressure=%.0fPa usecs=%u", type, temperature, humidity, pressure, usecs));
 
   (void)user_data;
 }
@@ -94,6 +95,12 @@ void barometer_drv_init() {
     num_baro++;
 
   if ((s_barometer[num_baro] = barometer_create(mgos_i2c_get_global(), 0x60, BARO_MPL115)))
+    num_baro++;
+
+  if ((s_barometer[num_baro] = barometer_create(mgos_i2c_get_global(), 0x60, BARO_MPL3115)))
+    num_baro++;
+
+  if ((s_barometer[num_baro] = barometer_create(mgos_i2c_get_global(), 0x77, BARO_MS5611)))
     num_baro++;
 
   if (num_baro>0)
