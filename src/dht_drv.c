@@ -20,14 +20,14 @@
 #include "mgos_dht.h"
 #include "mgos_prometheus_sensors.h"
 
-#define MAX_DHT    8
+#define MAX_DHT 8
 
 struct dht_sensor {
   struct mgos_dht *dht;
-  float            temp;
-  float            humidity;
-  uint8_t          gpio;
-  uint8_t          idx;
+  float temp;
+  float humidity;
+  uint8_t gpio;
+  uint8_t idx;
 };
 
 static struct dht_sensor *s_dht_sensor[MAX_DHT];
@@ -38,38 +38,43 @@ static void dht_prometheus_metrics(struct mg_connection *nc, void *user_data) {
   struct mgos_dht_stats stats;
 
   for (i = 0; i < s_num_dht; i++) {
-    mgos_prometheus_metrics_printf(nc, GAUGE,
-                                   "temperature", "Temperature in Celcius",
-                                   "{sensor=\"%d\",type=\"DHT\"} %f", i, s_dht_sensor[i]->temp);
-    mgos_prometheus_metrics_printf(nc, GAUGE,
-                                   "humidity", "Relative humidity percentage",
-                                   "{sensor=\"%d\",type=\"DHT\"} %f", i, s_dht_sensor[i]->humidity);
+    mgos_prometheus_metrics_printf(
+        nc, GAUGE, "temperature", "Temperature in Celcius",
+        "{sensor=\"%d\",type=\"DHT\"} %f", i, s_dht_sensor[i]->temp);
+    mgos_prometheus_metrics_printf(
+        nc, GAUGE, "humidity", "Relative humidity percentage",
+        "{sensor=\"%d\",type=\"DHT\"} %f", i, s_dht_sensor[i]->humidity);
 
     if (mgos_dht_getStats(s_dht_sensor[i]->dht, &stats)) {
-      mgos_prometheus_metrics_printf(nc, COUNTER,
-                                     "sensor_read_total", "Total reads from sensor",
-                                     "{sensor=\"%d\",type=\"DHT\"} %u", i, stats.read);
-      mgos_prometheus_metrics_printf(nc, COUNTER,
-                                     "sensor_read_success_total", "Total successful reads from sensor",
-                                     "{sensor=\"%d\",type=\"DHT\"} %u", i, stats.read_success);
-      mgos_prometheus_metrics_printf(nc, COUNTER,
-                                     "sensor_read_success_cached_total", "Total successful cached reads from sensor",
-                                     "{sensor=\"%d\",type=\"DHT\"} %u", i, stats.read_success_cached);
-      uint32_t errors = stats.read - stats.read_success - stats.read_success_cached;
-      mgos_prometheus_metrics_printf(nc, COUNTER,
-                                     "sensor_read_error_total", "Total unsuccessful reads from sensor",
-                                     "{sensor=\"%d\",type=\"DHT\"} %u", i, errors);
-      mgos_prometheus_metrics_printf(nc, COUNTER,
-                                     "sensor_read_success_usecs_total", "Total microseconds spent in reads from sensor",
-                                     "{sensor=\"%d\",type=\"DHT\"} %f", i, stats.read_success_usecs);
+      mgos_prometheus_metrics_printf(
+          nc, COUNTER, "sensor_read_total", "Total reads from sensor",
+          "{sensor=\"%d\",type=\"DHT\"} %u", i, stats.read);
+      mgos_prometheus_metrics_printf(nc, COUNTER, "sensor_read_success_total",
+                                     "Total successful reads from sensor",
+                                     "{sensor=\"%d\",type=\"DHT\"} %u", i,
+                                     stats.read_success);
+      mgos_prometheus_metrics_printf(
+          nc, COUNTER, "sensor_read_success_cached_total",
+          "Total successful cached reads from sensor",
+          "{sensor=\"%d\",type=\"DHT\"} %u", i, stats.read_success_cached);
+      uint32_t errors =
+          stats.read - stats.read_success - stats.read_success_cached;
+      mgos_prometheus_metrics_printf(nc, COUNTER, "sensor_read_error_total",
+                                     "Total unsuccessful reads from sensor",
+                                     "{sensor=\"%d\",type=\"DHT\"} %u", i,
+                                     errors);
+      mgos_prometheus_metrics_printf(
+          nc, COUNTER, "sensor_read_success_usecs_total",
+          "Total microseconds spent in reads from sensor",
+          "{sensor=\"%d\",type=\"DHT\"} %f", i, stats.read_success_usecs);
     }
   }
 
-  (void)user_data;
+  (void) user_data;
 }
 
 static void dht_timer_cb(void *user_data) {
-  struct dht_sensor *   dht_sensor = (struct dht_sensor *)user_data;
+  struct dht_sensor *dht_sensor = (struct dht_sensor *) user_data;
   struct mgos_dht_stats stats_before, stats_after;
   uint32_t usecs = 0;
 
@@ -78,12 +83,15 @@ static void dht_timer_cb(void *user_data) {
   }
 
   mgos_dht_getStats(dht_sensor->dht, &stats_before);
-  dht_sensor->temp     = mgos_dht_get_temp(dht_sensor->dht);
+  dht_sensor->temp = mgos_dht_get_temp(dht_sensor->dht);
   dht_sensor->humidity = mgos_dht_get_humidity(dht_sensor->dht);
   mgos_dht_getStats(dht_sensor->dht, &stats_after);
 
   usecs = stats_after.read_success_usecs - stats_before.read_success_usecs;
-  LOG(LL_INFO, ("DHT sensor=%u gpio=%u temperature=%.2fC humidity=%.1f%% usecs=%u", dht_sensor->idx, dht_sensor->gpio, dht_sensor->temp, dht_sensor->humidity, usecs));
+  LOG(LL_INFO,
+      ("DHT sensor=%u gpio=%u temperature=%.2fC humidity=%.1f%% usecs=%u",
+       dht_sensor->idx, dht_sensor->gpio, dht_sensor->temp,
+       dht_sensor->humidity, usecs));
 }
 
 static bool dht_sensor_create(int pin, enum dht_type type) {
@@ -102,10 +110,11 @@ static bool dht_sensor_create(int pin, enum dht_type type) {
     return false;
   }
   dht_sensor->gpio = pin;
-  dht_sensor->idx  = s_num_dht;
+  dht_sensor->idx = s_num_dht;
   s_dht_sensor[dht_sensor->idx] = dht_sensor;
   s_num_dht++;
-  mgos_set_timer(mgos_sys_config_get_sensors_dht_period() * 1000, true, dht_timer_cb, (void *)dht_sensor);
+  mgos_set_timer(mgos_sys_config_get_sensors_dht_period() * 1000, true,
+                 dht_timer_cb, (void *) dht_sensor);
   return true;
 }
 
@@ -133,11 +142,11 @@ void dht_drv_init() {
   char *tok;
 
   memset(s_dht_sensor, 0, sizeof(struct mgos_dht_sensor *) * MAX_DHT);
-  tok = strtok((char *)mgos_sys_config_get_sensors_dht_gpio(), ", ");
+  tok = strtok((char *) mgos_sys_config_get_sensors_dht_gpio(), ", ");
   while (tok) {
     int gpio;
     gpio = atoi(tok);
-    tok  = strtok(NULL, ", ");
+    tok = strtok(NULL, ", ");
     dht_sensor_create(gpio, AM2302);
     mgos_msleep(250);
   }
