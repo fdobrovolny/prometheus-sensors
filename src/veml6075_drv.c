@@ -18,6 +18,7 @@
 
 #ifdef MGOS_HAVE_VEML6075_I2C
 #include "mgos_prometheus_sensors.h"
+#include "mgos_time.h"
 #include "mgos_veml6075.h"
 
 static struct mgos_veml6075 *s_veml6075;
