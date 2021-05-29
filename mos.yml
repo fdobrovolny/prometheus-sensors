@@ -39,17 +39,17 @@ config_schema:
 
 # List of libraries used by this app, in order of initialisation
 # Note: To use sensor libraries, include one or more of these in your application mos.yml:
-#  - origin: https://github.com/mongoose-os-libs/dht
-#  - origin: https://github.com/mongoose-os-libs/veml6075-i2c
-#  - origin: https://github.com/mongoose-os-libs/bme280
-#  - origin: https://github.com/mongoose-os-libs/sht31-i2c
-#  - origin: https://github.com/mongoose-os-libs/si7021-i2c
-#  - origin: https://github.com/mongoose-os-libs/htu21df-i2c
-#  - origin: https://github.com/mongoose-os-libs/mcp9808-i2c
-#  - origin: https://github.com/mongoose-os-libs/ccs811-i2c
-#  - origin: https://github.com/mongoose-os-libs/barometer
+#  - location: https://github.com/mongoose-os-libs/dht
+#  - location: https://github.com/mongoose-os-libs/veml6075-i2c
+#  - location: https://github.com/mongoose-os-libs/bme280
+#  - location: https://github.com/mongoose-os-libs/sht31-i2c
+#  - location: https://github.com/mongoose-os-libs/si7021-i2c
+#  - location: https://github.com/mongoose-os-libs/htu21df-i2c
+#  - location: https://github.com/mongoose-os-libs/mcp9808-i2c
+#  - location: https://github.com/mongoose-os-libs/ccs811-i2c
+#  - location: https://github.com/mongoose-os-libs/barometer
 libs:
-  - origin: https://github.com/mongoose-os-libs/prometheus-metrics
+  - location: https://github.com/mongoose-os-libs/prometheus-metrics
 
 # Used by the mos tool to catch mos binaries incompatible with this file format
 manifest_version: 2017-05-18
