@@ -1,0 +1,27 @@
+author: Pim van Pelt <pim@google.com>
+description: Implements Mongoose Prometheus Metrics endpoint
+type: lib
+version: 1.0
+platforms: [esp32, esp8266, ubuntu]
+
+sources:
+  - src
+  - src/${arch}
+includes:
+  - include
+config_schema:
+  - ["prometheus", "o", {title: "Prometheus settings"}]
+  - ["prometheus.server_enable", "b", true, {title: "Enable Prometheus HTTP endpoint"}]
+  - ["prometheus.server_uri", "s", "/metrics", {title: "Serve Prometheus from this uri"}]
+  - ["prometheus.pushgateway", "s", "example.com:9091", {title: "Prometheus pushgateway host:port"}]
+  - ["prometheus.pushgateway_auth", "s", "", {title: "Authentication header for prometheus pushgateway"}]
+
+libs:
+  - location: https://github.com/mongoose-os-libs/http-server
+
+tags:
+  - c
+  - http
+  - docs:cloud:Prometheus metrics
+
+manifest_version: 2017-09-29
