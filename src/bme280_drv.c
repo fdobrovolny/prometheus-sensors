@@ -92,10 +92,10 @@ static void bme280_timer_cb(void *user_data) {
   if (mgos_bme280_is_bme280(s_bme280)) {
     LOG(LL_INFO,
         ("BME280 sensor=0 humidity=%.2f%% temperature=%.2fC pressure=%.1fHPa "
-         "usecs=%u",
+         "usecs=%lu",
          s_bme280_data.humid, s_bme280_data.temp, s_bme280_data.press, usecs));
   } else {
-    LOG(LL_INFO, ("BMP280 sensor=0 temperature=%.2fC pressure=%.1fHPa usecs=%u",
+    LOG(LL_INFO, ("BMP280 sensor=0 temperature=%.2fC pressure=%.1fHPa usecs=%lu",
                   s_bme280_data.temp, s_bme280_data.press, usecs));
   }
 

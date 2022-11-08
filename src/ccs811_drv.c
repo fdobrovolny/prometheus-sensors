@@ -70,7 +70,7 @@ static void ccs811_timer_cb(void *user_data) {
   mgos_ccs811_getStats(s_ccs811, &stats_after);
 
   usecs = stats_after.read_success_usecs - stats_before.read_success_usecs;
-  LOG(LL_INFO, ("CCS811 sensor=0 eCO2=%.0fppm TVOC=%.0fppb usecs=%u", eco2,
+  LOG(LL_INFO, ("CCS811 sensor=0 eCO2=%.0fppm TVOC=%.0fppb usecs=%lu", eco2,
                 tvoc, usecs));
 
   (void) user_data;

@@ -71,7 +71,7 @@ static void si7021_timer_cb(void *user_data) {
   mgos_si7021_getStats(s_si7021, &stats_after);
 
   usecs = stats_after.read_success_usecs - stats_before.read_success_usecs;
-  LOG(LL_INFO, ("SI7021 sensor=0 temperature=%.2fC humidity=%.1f%% usecs=%u",
+  LOG(LL_INFO, ("SI7021 sensor=0 temperature=%.2fC humidity=%.1f%% usecs=%lu",
                 temperature, humidity, usecs));
 
   (void) user_data;

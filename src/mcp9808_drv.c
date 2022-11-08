@@ -69,7 +69,7 @@ static void mcp9808_timer_cb(void *user_data) {
 
   usecs = stats_after.read_success_usecs - stats_before.read_success_usecs;
   LOG(LL_INFO,
-      ("MCP9808 sensor=0 temperature=%.2fC usecs=%u", temperature, usecs));
+      ("MCP9808 sensor=0 temperature=%.2fC usecs=%lu", temperature, usecs));
 
   (void) user_data;
 }

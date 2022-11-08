@@ -73,7 +73,7 @@ static void htu21df_timer_cb(void *user_data) {
   mgos_htu21df_getStats(s_htu21df, &stats_after);
 
   usecs = stats_after.read_success_usecs - stats_before.read_success_usecs;
-  LOG(LL_INFO, ("HTU21DF sensor=0 temperature=%.2fC humidity=%.1f%% usecs=%u",
+  LOG(LL_INFO, ("HTU21DF sensor=0 temperature=%.2fC humidity=%.1f%% usecs=%lu",
                 temperature, humidity, usecs));
 
   (void) user_data;

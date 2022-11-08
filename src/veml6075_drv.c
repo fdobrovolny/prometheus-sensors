@@ -78,7 +78,7 @@ static void veml6075_timer_cb(void *user_data) {
   uvb = mgos_veml6075_getUVB(s_veml6075);
   uvindex = mgos_veml6075_getUVIndex(s_veml6075);
   usecs = 1000000 * (mgos_uptime() - start);
-  LOG(LL_INFO, ("VEML6075 sensor=0 uva=%.1f uvb=%.1f uvindex=%.2f usecs=%u",
+  LOG(LL_INFO, ("VEML6075 sensor=0 uva=%.1f uvb=%.1f uvindex=%.2f usecs=%lu",
                 uva, uvb, uvindex, usecs));
 
   (void) user_data;

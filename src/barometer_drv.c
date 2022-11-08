@@ -95,7 +95,7 @@ static void barometer_timer_cb(void *user_data) {
   mgos_barometer_get_stats(baro, &stats_after);
 
   usecs = stats_after.read_success_usecs - stats_before.read_success_usecs;
-  LOG(LL_INFO, ("%s temperature=%.2fC humidity=%.1f%% pressure=%.0fPa usecs=%u",
+  LOG(LL_INFO, ("%s temperature=%.2fC humidity=%.1f%% pressure=%.0fPa usecs=%lu",
                 type, temperature, humidity, pressure, usecs));
 
   (void) user_data;

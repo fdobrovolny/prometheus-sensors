@@ -89,7 +89,7 @@ static void dht_timer_cb(void *user_data) {
 
   usecs = stats_after.read_success_usecs - stats_before.read_success_usecs;
   LOG(LL_INFO,
-      ("DHT sensor=%u gpio=%u temperature=%.2fC humidity=%.1f%% usecs=%u",
+      ("DHT sensor=%u gpio=%u temperature=%.2fC humidity=%.1f%% usecs=%lu",
        dht_sensor->idx, dht_sensor->gpio, dht_sensor->temp,
        dht_sensor->humidity, usecs));
 }
